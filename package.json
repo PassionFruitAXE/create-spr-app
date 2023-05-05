@@ -4,15 +4,16 @@
   "author": "PassionFruit",
   "license": "MIT",
   "description": "a exquisite cli",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/~~~.git"
-  },
+  "main": "dist/index.js",
   "keywords": [
     "exquisite-cli",
     "cli",
     "react"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/~~~.git"
+  },
   "bugs": {
     "url": "https://github.com/~~~/issues"
   },
@@ -20,10 +21,10 @@
     "run": "dist/index.js"
   },
   "scripts": {
+    "dev": "ts-node src/index.ts",
     "build": "npx rimraf dist && npx tsc",
-    "dev": "node dist/index.js"
+    "serve": "node dist/index.js"
   },
-  "main": "dist/index.js",
   "dependencies": {
     "@inquirer/prompts": "^1.0.1",
     "commander": "^10.0.1",

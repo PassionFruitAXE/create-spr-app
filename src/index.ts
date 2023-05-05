@@ -3,10 +3,10 @@ import { program } from "commander";
 program.version("1.0.0");
 
 program
-  .command("build")
-  .description("打包cli命令")
+  .command("start")
+  .description("start cli")
   .action(() => {
-    console.log(123);
+    console.log("cli starting");
   });
 
 program.parse(process.argv);
