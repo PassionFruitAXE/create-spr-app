@@ -1,0 +1,36 @@
+{
+  "name": "exquisite-cli",
+  "version": "1.0.0",
+  "author": "PassionFruit",
+  "license": "MIT",
+  "description": "a exquisite cli",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/~~~.git"
+  },
+  "keywords": [
+    "exquisite-cli",
+    "cli",
+    "react"
+  ],
+  "bugs": {
+    "url": "https://github.com/~~~/issues"
+  },
+  "bin": {
+    "run": "dist/index.js"
+  },
+  "scripts": {
+    "build": "npx rimraf dist && npx tsc",
+    "dev": "node dist/index.js"
+  },
+  "main": "dist/index.js",
+  "dependencies": {
+    "@inquirer/prompts": "^1.0.1",
+    "commander": "^10.0.1",
+    "execa": "^7.1.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "rimraf": "^5.0.0"
+  }
+}
