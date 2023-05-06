@@ -1,14 +1,15 @@
 {
-  "name": "exquisite-cli",
+  "name": "spr-cli",
   "version": "1.0.0",
   "author": "PassionFruit",
   "license": "MIT",
-  "description": "a exquisite cli",
-  "main": "dist/index.js",
+  "description": "a interactive javascript cli",
+  "main": "./dist/index.js",
   "keywords": [
-    "exquisite-cli",
+    "spr-cli",
     "cli",
-    "react"
+    "react",
+    "vue"
   ],
   "repository": {
     "type": "git",
@@ -18,20 +19,22 @@
     "url": "https://github.com/~~~/issues"
   },
   "bin": {
-    "run": "dist/index.js"
+    "create-spr-app": "./dist/index.js"
   },
   "scripts": {
-    "dev": "ts-node src/index.ts",
+    "dev": "ts-node src/index.ts start",
     "build": "npx rimraf dist && npx tsc",
-    "serve": "node dist/index.js"
+    "serve": "create-spr-app start"
   },
   "dependencies": {
-    "@inquirer/prompts": "^1.0.1",
     "commander": "^10.0.1",
-    "execa": "^7.1.1"
+    "execa": "^7.1.1",
+    "inquirer": "^8.0.0"
   },
   "devDependencies": {
+    "@types/inquirer": "^9.0.3",
     "@types/node": "^20.0.0",
-    "rimraf": "^5.0.0"
+    "rimraf": "^5.0.0",
+    "typescript": "^5.0.4"
   }
 }
