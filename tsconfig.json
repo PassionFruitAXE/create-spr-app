@@ -3,10 +3,14 @@
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
+    "module": "NodeNext",
     "forceConsistentCasingInFileNames": true,
     "sourceMap": true,
     "outDir": "./dist"
   },
   "include": ["src/**/*.ts", "src/index.ts"],
-  "exclude": ["node_modules/*"]
+  "exclude": ["node_modules/*"],
+  "ts-node": {
+    "esm": true
+  }
 }

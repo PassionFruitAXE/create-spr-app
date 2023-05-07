@@ -5,6 +5,7 @@
   "license": "MIT",
   "description": "a interactive javascript cli",
   "main": "./dist/index.js",
+  "type": "module",
   "keywords": [
     "spr-cli",
     "cli",
@@ -28,12 +29,11 @@
   },
   "dependencies": {
     "commander": "^10.0.1",
-    "execa": "^7.1.1",
-    "inquirer": "^8.0.0"
+    "execa": "^7.1.1"
   },
   "devDependencies": {
     "@types/inquirer": "^9.0.3",
-    "@types/node": "^20.0.0",
+    "@types/node": "^20.1.0",
     "rimraf": "^5.0.0",
     "typescript": "^5.0.4"
   }
