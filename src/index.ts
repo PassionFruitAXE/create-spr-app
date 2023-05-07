@@ -1,7 +1,7 @@
-import createPackageJson from "./lib/package";
+import createProject from "./lib/project/index.js";
 import inquirer from "inquirer";
 import path from "path";
-import { createDependenceByTemplate } from "./lib/dependence";
+import { createDependenceByTemplate } from "./lib/dependence.js";
 import { execa } from "execa";
 import { program } from "commander";
 
@@ -13,9 +13,8 @@ function init() {
     .action(async () => {
       /** write code here */
       console.log("cli start");
-      /** 创建package.json对象 */
-      const packageJson = createPackageJson();
-      /** 获取用户选择包管理器 模板 */
+
+      /** 获取项目名 包管理器 模板 */
       const { projectName, packageManager, template } = await inquirer.prompt([
         {
           type: "input",
@@ -56,14 +55,16 @@ function init() {
             message: "是否需要Github Action",
           },
         ]);
-      /** 创建package.json文件 */
-      packageJson.generateFile("");
-      // const projectPath = "";
+      /** 创建项目文件夹 */
+      const project = createProject(projectName, template);
+      project.init();
+
+      const projectPath = "";
       // /** 安装依赖 */
-      // execa(`${packageManager} install`, [], {
-      //   cwd: path.join(process.cwd(), projectPath),
-      //   stdio: ["inherit", "pipe", "inherit"],
-      // });
+      execa(`${packageManager} install`, [], {
+        cwd: path.join(process.cwd(), projectPath),
+        stdio: ["inherit", "pipe", "inherit"],
+      });
 
       console.log("cli end");
     });
