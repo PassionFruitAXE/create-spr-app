@@ -1,1 +1,0 @@
-{"compilerOptions":{"target":"esnext","module":"esnext","moduleResolution":"Node","importHelpers":true,"esModuleInterop":true,"sourceMap":true,"baseUrl":"./","strict":true,"allowSyntheticDefaultImports":true,"jsx":"react-jsx","paths":{"@/*":["./src/*"]}}}
