@@ -5,7 +5,8 @@ import ReadmeModule from "./readmeModule.js";
 import SrcModule from "./srcModule.js";
 import { CommanderError } from "commander";
 import { createTSModule, TSModule } from "./tsModule.js";
-import { TConfig, Template } from "../global.js";
+import { TConfig } from "../types/index.js";
+import { Template } from "../enum.js";
 import {
   createPackageJsonModule,
   PackageJsonModule,

@@ -1,8 +1,8 @@
 import fs from "fs";
 import path from "path";
-import { CONFIG_PREFIX, Module } from "./global.js";
+import { CONFIG_PREFIX } from "./global.js";
 import { fileURLToPath } from "url";
-import { TConfig } from "../global.js";
+import { Module, TConfig } from "../types/index.js";
 
 // @ts-ignore
 // 防止IDE对import.meta.url报错
