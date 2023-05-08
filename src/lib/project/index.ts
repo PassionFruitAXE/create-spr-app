@@ -1,11 +1,12 @@
 import fs from "fs";
 import GitModule from "./gitModule.js";
 import IndexModule from "./indexModule.js";
-import PackageJsonModule from "./packageJsonModule/index.js";
 import ReadmeModule from "./readmeModule.js";
 import SrcModule from "./srcModule.js";
-import TSModule from "./tsModule.js";
 import { CommanderError } from "commander";
+import { createTSModule, TSModule } from "./tsModule.js";
+import { PackageJsonModule } from "./packageJsonModule.js";
+import { Template } from "./global.js";
 
 abstract class Project {
   /** src模块 */
@@ -35,30 +36,37 @@ abstract class Project {
   }
 
   public init(): void {
-    const path = `${process.cwd()}/${this.projectName}`;
+    const rootPath = `${process.cwd()}/${this.projectName}`;
     /** 创建项目文件夹 */
-    fs.mkdirSync(path);
+    fs.mkdirSync(rootPath);
     /** 创建子模块 */
-    this.srcModule?.init(path);
-    this.gitModule?.init(path);
-    this.indexModule?.init(path);
-    this.readmeModule?.init(path);
-    this.tsModule?.init(path);
-    this.packageJsonModule?.init(path);
+    this.srcModule?.init(rootPath);
+    this.gitModule?.init(rootPath);
+    this.indexModule?.init(rootPath);
+    this.readmeModule?.init(rootPath);
+    this.tsModule?.init(rootPath);
+    this.packageJsonModule?.init(rootPath);
   }
 }
 
 class reactProject extends Project {
   constructor(projectName: string) {
     super(projectName);
+    this.tsModule = createTSModule("react");
   }
 }
 
+/**
+ * Project工厂
+ * @param projectName 项目名称
+ * @param templateType 项目模板类型
+ * @returns 对应Project实例
+ */
 export default function createProject(
   projectName: string,
   templateType: string
 ) {
-  if (templateType === "react") {
+  if (templateType === Template.REACT) {
     return new reactProject(projectName);
   } else {
     throw new CommanderError(500, "500", "没有对应的template");

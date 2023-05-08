@@ -1,8 +1,10 @@
 import fs from "fs";
+import path from "path";
+import { Module } from "./global.js";
 
-export default class SrcModule {
+export default class SrcModule implements Module {
   constructor() {}
-  public init(path: string): void {
-    fs.mkdirSync(`${path}/src`);
+  public init(rootPath: string): void {
+    fs.mkdirSync(`${rootPath}/src`);
   }
 }
