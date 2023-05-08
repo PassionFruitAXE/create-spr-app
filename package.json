@@ -29,7 +29,8 @@
   },
   "dependencies": {
     "commander": "^10.0.1",
-    "execa": "^7.1.1"
+    "execa": "^7.1.1",
+    "inquirer": "^9.2.2"
   },
   "devDependencies": {
     "@types/inquirer": "^9.0.3",

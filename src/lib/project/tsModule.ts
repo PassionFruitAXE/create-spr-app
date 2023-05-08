@@ -1,8 +1,9 @@
 import fs from "fs";
 import path from "path";
 import { CommanderError } from "commander";
-import { CONFIG_PREFIX, Module, Template } from "./global.js";
+import { CONFIG_PREFIX, Module } from "./global.js";
 import { fileURLToPath } from "url";
+import { TConfig, Template } from "../global.js";
 
 // @ts-ignore
 // 防止IDE对import.meta.url报错
@@ -17,9 +18,9 @@ export class TSModule implements Module {
     );
     this.config = JSON.parse(template.toString());
   }
-  public init(rootPath: string): void {
+  public init(config: TConfig): void {
     fs.writeFileSync(
-      path.join(rootPath, "/tsconfig.json"),
+      path.join(config.rootPath, "/tsconfig.json"),
       JSON.stringify(this.config)
     );
   }

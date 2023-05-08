@@ -5,8 +5,11 @@ import ReadmeModule from "./readmeModule.js";
 import SrcModule from "./srcModule.js";
 import { CommanderError } from "commander";
 import { createTSModule, TSModule } from "./tsModule.js";
-import { PackageJsonModule } from "./packageJsonModule.js";
-import { Template } from "./global.js";
+import { TConfig, Template } from "../global.js";
+import {
+  createPackageJsonModule,
+  PackageJsonModule,
+} from "./packageJsonModule.js";
 
 abstract class Project {
   /** src模块 */
@@ -24,9 +27,9 @@ abstract class Project {
 
   /**
    * Project类构造函数
-   * @param projectName 项目名称
+   * @param config 项目配置对象
    */
-  constructor(public projectName: string) {
+  constructor(public config: TConfig) {
     this.srcModule = new SrcModule();
     this.gitModule = new GitModule();
     this.indexModule = new IndexModule();
@@ -36,38 +39,34 @@ abstract class Project {
   }
 
   public init(): void {
-    const rootPath = `${process.cwd()}/${this.projectName}`;
     /** 创建项目文件夹 */
-    fs.mkdirSync(rootPath);
+    fs.mkdirSync(this.config.rootPath);
     /** 创建子模块 */
-    this.srcModule?.init(rootPath);
-    this.gitModule?.init(rootPath);
-    this.indexModule?.init(rootPath);
-    this.readmeModule?.init(rootPath);
-    this.tsModule?.init(rootPath);
-    this.packageJsonModule?.init(rootPath);
+    this.srcModule?.init(this.config);
+    this.gitModule?.init(this.config);
+    this.indexModule?.init(this.config);
+    this.readmeModule?.init(this.config);
+    this.tsModule?.init(this.config);
+    this.packageJsonModule?.init(this.config);
   }
 }
 
 class reactProject extends Project {
-  constructor(projectName: string) {
-    super(projectName);
-    this.tsModule = createTSModule("react");
+  constructor(config: TConfig) {
+    super(config);
+    this.tsModule = createTSModule(Template.REACT);
+    this.packageJsonModule = createPackageJsonModule(Template.REACT);
   }
 }
 
 /**
- * Project工厂
- * @param projectName 项目名称
- * @param templateType 项目模板类型
- * @returns 对应Project实例
+ * 项目工厂
+ * @param props TProps
+ * @returns Project的子类
  */
-export default function createProject(
-  projectName: string,
-  templateType: string
-) {
-  if (templateType === Template.REACT) {
-    return new reactProject(projectName);
+export default function createProject(props: TConfig) {
+  if (props.template === Template.REACT) {
+    return new reactProject(props);
   } else {
     throw new CommanderError(500, "500", "没有对应的template");
   }

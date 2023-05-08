@@ -1,6 +1,7 @@
 import createProject from "./lib/project/index.js";
 import inquirer from "inquirer";
 import path from "path";
+import { Builder, PackageManager, TConfig, Template } from "./lib/global.js";
 import { createDependenceByTemplate } from "./lib/dependence.js";
 import { execa } from "execa";
 import { program } from "commander";
@@ -13,60 +14,71 @@ program
     /** write code here */
     console.log("cli start");
 
-    /** 获取项目名 包管理器 模板 */
-    const { projectName, packageManager, template } = await inquirer.prompt([
-      {
-        type: "input",
-        name: "projectName",
-        message: "输入项目名称",
-      },
-      {
-        type: "list",
-        name: "packageManager",
-        message: "选择包管理器",
-        choices: ["pnpm", "yarn", "npm"],
-      },
-      {
-        type: "list",
-        name: "template",
-        message: "选择模板",
-        choices: ["react"],
-      },
-    ]);
-    /** 获取用户选择打包工具 默认依赖 是否需要GitHub Action */
-    const { builder, dependence, isGithubActionRequired } =
+    /** 获取项目名 包管理器 模板 打包工具 */
+    const { projectName, packageManager, template, builder } =
       await inquirer.prompt([
+        {
+          type: "input",
+          name: "projectName",
+          message: "输入项目名称",
+        },
+        {
+          type: "list",
+          name: "packageManager",
+          message: "选择包管理器",
+          choices: [
+            PackageManager.PNPM,
+            PackageManager.YARN,
+            PackageManager.NPM,
+          ],
+        },
+        {
+          type: "list",
+          name: "template",
+          message: "选择模板",
+          choices: [Template.REACT],
+        },
         {
           type: "list",
           name: "builder",
           message: "选择打包工具",
-          choices: ["vite"],
-        },
-        {
-          type: "checkbox",
-          name: "dependence",
-          message: "默认依赖包",
-          choices: createDependenceByTemplate(template),
-        },
-        {
-          type: "confirm",
-          name: "isGithubActionRequired",
-          message: "是否需要Github Action",
+          choices: [Builder.VITE],
         },
       ]);
-    /** 创建项目文件夹 */
 
-    const project = createProject(projectName, template);
+    /** 获取默认依赖包 */
+    const { dependencies } = await inquirer.prompt([
+      {
+        type: "checkbox",
+        name: "dependencies",
+        message: "默认依赖包",
+        choices: createDependenceByTemplate(template),
+      },
+    ]);
+
+    /** 创建项目目录 */
+    const rootPath = path.join(process.cwd(), `/${projectName}`);
+
+    const props: TConfig = {
+      rootPath,
+      projectName,
+      packageManager,
+      template,
+      builder,
+      dependencies,
+    };
+    const project = createProject(props);
     project.init();
 
-    // const projectPath = "";
-    // // /** 安装依赖 */
-    // execa(`${packageManager} install`, [], {
-    //   cwd: path.join(process.cwd(), projectPath),
-    //   stdio: ["inherit", "pipe", "inherit"],
-    // });
+    /** 安装依赖 */
+    console.log("安装依赖中~~~");
+    await execa(`${packageManager} install`, [], {
+      cwd: rootPath,
+      stdio: ["inherit", "pipe", "inherit"],
+    });
+    console.log("依赖安装完成");
 
-    // console.log("cli end");
+    console.log("cli end");
   });
 
 program.parse(process.argv);
