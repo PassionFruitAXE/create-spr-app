@@ -11,14 +11,12 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 export default class GitModule implements Module {
-  public value: Buffer = Buffer.from("");
-  constructor() {
-    this.value = fs.readFileSync(
-      path.join(__dirname, TEMPLATE_PREFIX, "/.gitignore")
-    );
-  }
+  constructor() {}
   public async init(config: TConfig) {
     await useCommand("git init", config.rootPath);
-    fs.writeFileSync(path.join(config.rootPath, "/.gitignore"), this.value);
+    fs.copyFileSync(
+      path.join(__dirname, TEMPLATE_PREFIX, "/.gitignore"),
+      path.join(config.rootPath, "/.gitignore")
+    );
   }
 }

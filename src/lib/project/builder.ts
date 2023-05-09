@@ -14,9 +14,11 @@ import { TConfig } from "../types/index.js";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-abstract class ViteBuilder extends Package {
-  static createInstance: () => ViteBuilder;
+export abstract class BuilderPackage extends Package {
+  getScript: () => Record<string, string> = () => ({});
+}
 
+abstract class ViteBuilder extends BuilderPackage {
   constructor(newValue?: GetArrayValueType<TConfig["deps"]>) {
     const name: string = "vite";
     const value: GetArrayValueType<TConfig["deps"]> = {
@@ -29,6 +31,7 @@ abstract class ViteBuilder extends Package {
         "@vitejs/plugin-legacy": "*",
         ...newValue?.devDependencies,
       },
+      callback: newValue?.callback,
     };
     super(name, value);
   }
@@ -39,18 +42,26 @@ class ViteBuilderForReact extends ViteBuilder {
     return new ViteBuilderForReact();
   }
 
+  getScript: () => Record<string, string> = () => ({
+    build: "vite build",
+    dev: "vite",
+    preview: "vite preview",
+    commit: "git-cz",
+    prepare: "husky install",
+    lint: "npm run lint:script && npm run lint:style",
+    "lint:script": "eslint --ext .js,.jsx,.ts,.tsx --fix --quiet ./",
+    "lint:style": 'stylelint --fix "src/**/*.{css,scss}"',
+  });
+
   constructor() {
     const value: GetArrayValueType<TConfig["deps"]> = {
       devDependencies: {
         "@vitejs/plugin-react": "*",
       },
       callback: (project: Project) => {
-        const template = fs.readFileSync(
-          path.join(__dirname, REACT_PREFIX, "/vite.config.ts")
-        );
-        fs.writeFileSync(
-          path.join(project.config.rootPath, "/vite.config.ts"),
-          template
+        fs.copyFileSync(
+          path.join(__dirname, REACT_PREFIX, "/vite.config.ts"),
+          path.join(project.config.rootPath, "/vite.config.ts")
         );
       },
     };
@@ -58,7 +69,7 @@ class ViteBuilderForReact extends ViteBuilder {
   }
 }
 
-export function createBuilder(template: Builder): Package {
+export function createBuilder(template: Builder): BuilderPackage {
   if (template === Builder.VITE) {
     return ViteBuilderForReact.createInstance();
   } else {

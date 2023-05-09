@@ -9,7 +9,7 @@
     "outDir": "./dist"
   },
   "include": ["src/**/*.ts", "src/index.ts"],
-  "exclude": ["node_modules/*"],
+  "exclude": ["node_modules/*", "template/*.tsx"],
   "ts-node": {
     "esm": true
   }

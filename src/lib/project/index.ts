@@ -2,11 +2,10 @@ import fs from "fs";
 import GitModule from "./gitModule.js";
 import HtmlModule from "./htmlModule.js";
 import ReadmeModule from "./readmeModule.js";
-import SrcModule from "./srcModule.js";
+import { BuilderPackage, createBuilder } from "./builder.js";
 import { CommanderError } from "commander";
-import { createBuilder } from "./builder.js";
+import { createFileModule, FileModule } from "./srcModule.js";
 import { createTSModule, TSModule } from "./tsModule.js";
-import { Package } from "./packageList/package.js";
 import { TConfig } from "../types/index.js";
 import { Template } from "../enum.js";
 import { useCommand } from "../utils/execa.js";
@@ -16,8 +15,8 @@ import {
 } from "./packageJsonModule.js";
 
 export abstract class Project {
-  /** src模块 */
-  public srcModule: SrcModule | null = null;
+  /** 配置文件模块 */
+  public fileModule: FileModule | null = null;
   /** git模块 */
   public gitModule: GitModule | null = null;
   /** index.html模块 */
@@ -29,14 +28,14 @@ export abstract class Project {
   /** package.json模块 */
   public packageJsonModule: PackageJsonModule | null = null;
   /** 构建工具 */
-  public builder: Package | null = null;
+  public builder: BuilderPackage | null = null;
 
   /**
    * Project类构造函数
    * @param config 项目配置对象
    */
   constructor(public config: TConfig) {
-    this.srcModule = new SrcModule();
+    this.fileModule = new FileModule();
     this.gitModule = new GitModule();
     this.htmlModule = new HtmlModule();
     this.readmeModule = new ReadmeModule();
@@ -57,14 +56,12 @@ export abstract class Project {
     /** 创建项目文件夹 */
     fs.mkdirSync(this.config.rootPath);
     /** 创建子模块 */
-    await this.srcModule?.init(this.config);
+    await this.fileModule?.init(this.config);
     await this.gitModule?.init(this.config);
     await this.htmlModule?.init(this.config);
     await this.readmeModule?.init(this.config);
     await this.tsModule?.init(this.config);
     await this.packageJsonModule?.init(this.config);
-    /** 添加构建工具 */
-    this.packageJsonModule?.addDeps(this.builder?.value ?? {});
   }
 
   /**
@@ -92,9 +89,14 @@ export abstract class Project {
 class reactProject extends Project {
   constructor(config: TConfig) {
     super(config);
+    this.fileModule = createFileModule(Template.REACT);
     this.tsModule = createTSModule(Template.REACT);
     this.packageJsonModule = createPackageJsonModule(Template.REACT);
     this.builder = createBuilder(config.builder);
+    /** 添加构建工具 */
+    this.config.deps.push(this.builder.value);
+    /** 添加scripts脚本 */
+    this.packageJsonModule.addScript(this.builder.getScript());
   }
 }
 

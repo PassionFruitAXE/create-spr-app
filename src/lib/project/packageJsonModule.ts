@@ -35,6 +35,13 @@ export class PackageJsonModule implements Module {
     };
   }
 
+  public addScript(script: Record<string, string>): void {
+    this.config.scripts = {
+      ...this.config.script,
+      ...script,
+    };
+  }
+
   public async init(config: TConfig) {
     config.deps.forEach((dep) => {
       this.addDeps(dep);
@@ -49,37 +56,20 @@ export class PackageJsonModule implements Module {
 class reactPackageJsonModule extends PackageJsonModule {
   constructor() {
     super();
-    this.config.dependencies = {
-      react: "*",
-      "react-dom": "*",
-      "react-router-dom": "*",
-    };
-    this.config.devDependencies = {
-      "@commitlint/cli": "*",
-      "@commitlint/config-conventional": "*",
-      "@types/node": "*",
-      "@types/react": "*",
-      "@types/react-dom": "*",
-      "@typescript-eslint/eslint-plugin": "*",
-      "@typescript-eslint/parser": "*",
-      commitizen: "*",
-      commitlint: "*",
-      "cz-conventional-changelog": "*",
-      eslint: "*",
-      "eslint-config-prettier": "*",
-      "eslint-plugin-prettier": "*",
-      "eslint-plugin-react": "*",
-      husky: "*",
-      "lint-staged": "*",
-      prettier: "*",
-      stylelint: "*",
-      "stylelint-config-prettier": "*",
-      "stylelint-config-recess-order": "*",
-      "stylelint-config-standard": "*",
-      "stylelint-prettier": "*",
-      terser: "*",
-      typescript: "*",
-    };
+    this.addDeps({
+      dependencies: {
+        react: "*",
+        "react-dom": "*",
+        "react-router-dom": "*",
+      },
+      devDependencies: {
+        "@types/node": "*",
+        "@types/react": "*",
+        "@types/react-dom": "*",
+        "eslint-plugin-react": "*",
+        terser: "*",
+      },
+    });
   }
 }
 
