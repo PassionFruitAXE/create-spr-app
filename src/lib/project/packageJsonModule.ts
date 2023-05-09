@@ -1,11 +1,11 @@
 import fs from "fs";
 import path from "path";
 import { CommanderError } from "commander";
-import { CONFIG_PREFIX } from "./global.js";
 import { fileURLToPath } from "url";
 import { GetArrayValueType } from "../types/utils.js";
 import { Module, TConfig } from "../types/index.js";
 import { Template } from "../enum.js";
+import { TEMPLATE_PREFIX } from "./global.js";
 
 // @ts-ignore 防止IDE对import.meta.url报错
 const __filename = fileURLToPath(import.meta.url);
@@ -15,11 +15,15 @@ export class PackageJsonModule implements Module {
   public config: Record<string, any> = {};
   constructor() {
     let template = fs.readFileSync(
-      path.join(__dirname, `${CONFIG_PREFIX}/package.json`)
+      path.join(__dirname, TEMPLATE_PREFIX, "/package.json")
     );
     this.config = JSON.parse(template.toString());
   }
 
+  /**
+   * 添加依赖
+   * @param deps 依赖项
+   */
   public addDeps(deps: GetArrayValueType<TConfig["deps"]>): void {
     this.config.dependencies = {
       ...this.config.dependencies,
@@ -31,10 +35,9 @@ export class PackageJsonModule implements Module {
     };
   }
 
-  public init(config: TConfig): void {
+  public async init(config: TConfig) {
     config.deps.forEach((dep) => {
       this.addDeps(dep);
-      dep.callback && dep.callback();
     });
     fs.writeFileSync(
       path.join(config.rootPath, "/package.json"),
@@ -59,8 +62,6 @@ class reactPackageJsonModule extends PackageJsonModule {
       "@types/react-dom": "*",
       "@typescript-eslint/eslint-plugin": "*",
       "@typescript-eslint/parser": "*",
-      "@vitejs/plugin-legacy": "*",
-      "@vitejs/plugin-react": "*",
       commitizen: "*",
       commitlint: "*",
       "cz-conventional-changelog": "*",

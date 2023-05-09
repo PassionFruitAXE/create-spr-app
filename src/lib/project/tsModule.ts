@@ -1,10 +1,10 @@
 import fs from "fs";
 import path from "path";
 import { CommanderError } from "commander";
-import { CONFIG_PREFIX } from "./global.js";
 import { fileURLToPath } from "url";
 import { Module, TConfig } from "../types/index.js";
 import { Template } from "../enum.js";
+import { TEMPLATE_PREFIX } from "./global.js";
 
 // @ts-ignore
 // 防止IDE对import.meta.url报错
@@ -15,11 +15,11 @@ export class TSModule implements Module {
   public config: Record<string, any> = {};
   constructor() {
     let template = fs.readFileSync(
-      path.join(__dirname, `${CONFIG_PREFIX}/tsconfig.json`)
+      path.join(__dirname, TEMPLATE_PREFIX, "/tsconfig.json")
     );
     this.config = JSON.parse(template.toString());
   }
-  public init(config: TConfig): void {
+  public async init(config: TConfig) {
     fs.writeFileSync(
       path.join(config.rootPath, "/tsconfig.json"),
       JSON.stringify(this.config)

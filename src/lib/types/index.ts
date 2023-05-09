@@ -1,7 +1,8 @@
 import { Builder, PackageManager, Template } from "../enum.js";
+import { Project } from "../project/index.js";
 
 export interface Module {
-  init: (config: TConfig) => void;
+  init: (config: TConfig) => Promise<void>;
 }
 
 export type TConfig = {
@@ -13,6 +14,6 @@ export type TConfig = {
   deps: {
     dependencies?: Record<string, string>;
     devDependencies?: Record<string, string>;
-    callback?: () => void;
+    callback?: (project: Project) => void;
   }[];
 };

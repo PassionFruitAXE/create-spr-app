@@ -1,11 +1,9 @@
-import createProject from "./lib/project/index.js";
 import inquirer from "inquirer";
 import path from "path";
 import { Builder, PackageManager, Template } from "./lib/enum.js";
-import { createPackagesByTemplate } from "./lib/project/packages/index.js";
-import { execa } from "execa";
+import { createPackagesByTemplate } from "./lib/project/packageList/index.js";
+import { createProject } from "./lib/project/index.js";
 import { program } from "commander";
-import { TConfig } from "./lib/types/index.js";
 
 async function action() {
   /** write code here */
@@ -52,24 +50,17 @@ async function action() {
   /** 创建项目目录 */
   const rootPath = path.join(process.cwd(), `/${projectName}`);
 
-  const props: TConfig = {
+  /** 创建项目实例 */
+  const project = createProject({
     rootPath,
     projectName,
     packageManager,
     template,
     builder,
     deps,
-  };
-  const project = createProject(props);
-  project.init();
-
-  /** 安装依赖 */
-  console.log("安装依赖中~~~");
-  await execa(`${packageManager} install`, [], {
-    cwd: rootPath,
-    stdio: ["inherit", "pipe", "inherit"],
   });
-  console.log("依赖安装完成");
+  /** 生成项目 */
+  await project.run();
 
   console.log("cli end");
 }

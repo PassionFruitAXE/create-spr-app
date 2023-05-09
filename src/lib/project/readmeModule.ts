@@ -1,8 +1,8 @@
 import fs from "fs";
 import path from "path";
-import { CONFIG_PREFIX } from "./global.js";
 import { fileURLToPath } from "url";
 import { Module, TConfig } from "../types/index.js";
+import { TEMPLATE_PREFIX } from "./global.js";
 
 // @ts-ignore
 // 防止IDE对import.meta.url报错
@@ -13,10 +13,10 @@ export default class ReadmeModule implements Module {
   public value: Buffer = Buffer.from("");
   constructor() {
     this.value = fs.readFileSync(
-      path.join(__dirname, `${CONFIG_PREFIX}/README.md`)
+      path.join(__dirname, TEMPLATE_PREFIX, "/README.md")
     );
   }
-  public init(config: TConfig): void {
-    fs.writeFileSync(`${config.rootPath}/README.md`, this.value);
+  public async init(config: TConfig) {
+    fs.writeFileSync(path.join(config.rootPath, "/README.md"), this.value);
   }
 }
