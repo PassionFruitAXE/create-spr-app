@@ -1,7 +1,7 @@
 import inquirer from "inquirer";
 import path from "path";
 import { Builder, PackageManager, Template } from "./lib/enum.js";
-import { createPackagesByTemplate } from "./lib/project/packageList/index.js";
+import { createPackagesByTemplate } from "./lib/project/packages/index.js";
 import { createProject } from "./lib/project/index.js";
 import { program } from "commander";
 

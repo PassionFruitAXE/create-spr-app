@@ -13,25 +13,26 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 export class FileModule implements Module {
-  constructor() {}
-  public async init(config: TConfig) {
-    fs.mkdirSync(path.join(config.rootPath, "/src"));
+  constructor(public config: TConfig) {}
+  public async init() {
+    fs.mkdirSync(path.join(this.config.rootPath, "/src"));
   }
 }
 
 class ReactFileModule extends FileModule {
-  constructor() {
-    super();
+  constructor(config: TConfig) {
+    super(config);
   }
   public async init() {
-    deepCopyFile(path.join(__dirname, REACT_PREFIX), path.join(`./test`));
+    /** 将REACT_PREFIX中的文件拷贝过去 */
+    deepCopyFile(path.join(__dirname, REACT_PREFIX), this.config.rootPath);
   }
 }
 
-export function createFileModule(template: Template) {
-  if (template === Template.REACT) {
-    return new ReactFileModule();
+export function createFileModule(config: TConfig) {
+  if (config.template === Template.REACT) {
+    return new ReactFileModule(config);
   } else {
-    throw new CommanderError(500, "500", "没有对应的template");
+    throw new CommanderError(500, "500", `无${config.template}对应的依赖模板`);
   }
 }

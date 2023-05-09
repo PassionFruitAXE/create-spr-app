@@ -10,11 +10,11 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 export default class ReadmeModule implements Module {
-  constructor() {}
-  public async init(config: TConfig) {
+  constructor(public config: TConfig) {}
+  public async init() {
     fs.copyFileSync(
       path.join(__dirname, TEMPLATE_PREFIX, "/README.md"),
-      path.join(config.rootPath, "/README.md")
+      path.join(this.config.rootPath, "/README.md")
     );
   }
 }

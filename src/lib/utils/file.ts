@@ -1,6 +1,11 @@
 import fs from "fs";
 import path from "path";
 
+/**
+ * 文件深拷贝
+ * @param rootPath 模板路径
+ * @param toPath 目标路径
+ */
 export function deepCopyFile(rootPath: string, toPath: string) {
   fs.readdirSync(rootPath).forEach((filename) => {
     const newRootPath = path.join(rootPath, `/${filename}`);

@@ -22,6 +22,7 @@
     "@commitlint/config-conventional": "*",
     "@typescript-eslint/eslint-plugin": "*",
     "@typescript-eslint/parser": "*",
+    "autoprefixer": "*",
     "commitizen": "*",
     "commitlint": "*",
     "cz-conventional-changelog": "*",
@@ -30,12 +31,14 @@
     "eslint-plugin-prettier": "*",
     "husky": "*",
     "lint-staged": "*",
+    "postcss": "*",
     "prettier": "*",
     "stylelint": "*",
     "stylelint-config-prettier": "*",
     "stylelint-config-recess-order": "*",
     "stylelint-config-standard": "*",
     "stylelint-prettier": "*",
+    "tailwindcss": "*",
     "typescript": "*"
   }
 }

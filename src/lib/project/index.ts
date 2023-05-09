@@ -2,66 +2,82 @@ import fs from "fs";
 import GitModule from "./gitModule.js";
 import HtmlModule from "./htmlModule.js";
 import ReadmeModule from "./readmeModule.js";
-import { BuilderPackage, createBuilder } from "./builder.js";
 import { CommanderError } from "commander";
+import { createBuilder } from "./builder.js";
 import { createFileModule, FileModule } from "./srcModule.js";
 import { createTSModule, TSModule } from "./tsModule.js";
+import { Package } from "./packages/package.js";
 import { TConfig } from "../types/index.js";
 import { Template } from "../enum.js";
-import { useCommand } from "../utils/execa.js";
+import { useCommand } from "../utils/command.js";
 import {
   createPackageJsonModule,
   PackageJsonModule,
 } from "./packageJsonModule.js";
 
 export abstract class Project {
-  /** 配置文件模块 */
-  public fileModule: FileModule | null = null;
   /** git模块 */
   public gitModule: GitModule | null = null;
   /** index.html模块 */
   public htmlModule: HtmlModule | null = null;
   /** README.md模块 */
   public readmeModule: ReadmeModule | null = null;
+  /** 配置文件模块 */
+  public fileModule: FileModule | null = null;
   /** ts模块 */
   public tsModule: TSModule | null = null;
   /** package.json模块 */
   public packageJsonModule: PackageJsonModule | null = null;
   /** 构建工具 */
-  public builder: BuilderPackage | null = null;
+  public builder: Package | null = null;
 
   /**
    * Project类构造函数
    * @param config 项目配置对象
    */
   constructor(public config: TConfig) {
-    this.fileModule = new FileModule();
-    this.gitModule = new GitModule();
-    this.htmlModule = new HtmlModule();
-    this.readmeModule = new ReadmeModule();
-    this.tsModule = new TSModule();
-    this.packageJsonModule = new PackageJsonModule();
+    this.gitModule = new GitModule(config);
+    this.htmlModule = new HtmlModule(config);
+    this.readmeModule = new ReadmeModule(config);
+    this.fileModule = createFileModule(config);
+    this.tsModule = createTSModule(config);
+    this.builder = createBuilder(config);
+    /** 添加构建工具 */
+    this.config.deps.push(this.builder?.value ?? {});
+    /** package.json模块必须在最后生成 */
+    this.packageJsonModule = createPackageJsonModule(config);
   }
 
   public async run(): Promise<void> {
+    this.useBeforeInstallCallbackExecutor();
     await this.init();
     await this.packageInstall();
-    this.useCallbackExecutor();
+    this.useAfterInstallCallbackExecutor();
+    useCommand("npx husky install", this.config.rootPath);
   }
 
   /**
-   * 项目模块初始化
+   * 执行安装依赖前回调
+   */
+  private useBeforeInstallCallbackExecutor(): void {
+    this.config.deps.forEach((dep) => {
+      dep.beforeInstallCallback && dep.beforeInstallCallback(this);
+    });
+  }
+
+  /**
+   * 项目模块文件生成
    */
   private async init(): Promise<void> {
     /** 创建项目文件夹 */
     fs.mkdirSync(this.config.rootPath);
     /** 创建子模块 */
-    await this.fileModule?.init(this.config);
-    await this.gitModule?.init(this.config);
-    await this.htmlModule?.init(this.config);
-    await this.readmeModule?.init(this.config);
-    await this.tsModule?.init(this.config);
-    await this.packageJsonModule?.init(this.config);
+    await this.fileModule?.init();
+    await this.gitModule?.init();
+    await this.htmlModule?.init();
+    await this.readmeModule?.init();
+    await this.tsModule?.init();
+    await this.packageJsonModule?.init();
   }
 
   /**
@@ -77,11 +93,11 @@ export abstract class Project {
   }
 
   /**
-   * 执行依赖回调
+   * 执行安装依赖后回调
    */
-  private useCallbackExecutor(): void {
+  private useAfterInstallCallbackExecutor(): void {
     this.config.deps.forEach((dep) => {
-      dep.callback && dep.callback(this);
+      dep.afterInstallCallback && dep.afterInstallCallback(this);
     });
   }
 }
@@ -89,14 +105,6 @@ export abstract class Project {
 class reactProject extends Project {
   constructor(config: TConfig) {
     super(config);
-    this.fileModule = createFileModule(Template.REACT);
-    this.tsModule = createTSModule(Template.REACT);
-    this.packageJsonModule = createPackageJsonModule(Template.REACT);
-    this.builder = createBuilder(config.builder);
-    /** 添加构建工具 */
-    this.config.deps.push(this.builder.value);
-    /** 添加scripts脚本 */
-    this.packageJsonModule.addScript(this.builder.getScript());
   }
 }
 

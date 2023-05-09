@@ -10,11 +10,11 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 export default class HtmlModule implements Module {
-  constructor() {}
-  public async init(config: TConfig) {
+  constructor(public config: TConfig) {}
+  public async init() {
     fs.copyFileSync(
       path.join(__dirname, TEMPLATE_PREFIX, "/index.html"),
-      path.join(config.rootPath, "/index.html")
+      path.join(this.config.rootPath, "/index.html")
     );
   }
 }

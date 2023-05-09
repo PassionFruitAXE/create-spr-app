@@ -14,6 +14,7 @@ export type TConfig = {
   deps: {
     dependencies?: Record<string, string>;
     devDependencies?: Record<string, string>;
-    callback?: (project: Project) => void;
+    beforeInstallCallback?: (project: Project) => void;
+    afterInstallCallback?: (project: Project) => void;
   }[];
 };
