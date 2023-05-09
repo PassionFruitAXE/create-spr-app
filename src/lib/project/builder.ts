@@ -47,7 +47,6 @@ class ViteBuilderForReact extends ViteBuilder {
         "@vitejs/plugin-react": "*",
       },
       beforeInstallCallback: (project: Project) => {
-        console.log("success");
         project.packageJsonModule?.mergeConfig({
           scripts: {
             build: "vite build",
