@@ -1,0 +1,41 @@
+{
+  "name": "spr-template",
+  "version": "0.0.0",
+  "private": "true",
+  "scripts": {},
+  "config": {
+    "commitizen": {
+      "path": "node_modules/cz-conventional-changelog"
+    }
+  },
+  "lint-staged": {
+    "**/*": "prettier --write --ignore-unknown"
+  },
+  "husky": {
+    "hooks": {
+      "prepare-commit-msg": "exec < /dev/tty && git cz --hook || true"
+    }
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@commitlint/cli": "*",
+    "@commitlint/config-conventional": "*",
+    "@typescript-eslint/eslint-plugin": "*",
+    "@typescript-eslint/parser": "*",
+    "commitizen": "*",
+    "commitlint": "*",
+    "cz-conventional-changelog": "*",
+    "eslint": "*",
+    "eslint-config-prettier": "*",
+    "eslint-plugin-prettier": "*",
+    "husky": "*",
+    "lint-staged": "*",
+    "prettier": "*",
+    "stylelint": "*",
+    "stylelint-config-prettier": "*",
+    "stylelint-config-recess-order": "*",
+    "stylelint-config-standard": "*",
+    "stylelint-prettier": "*",
+    "typescript": "*"
+  }
+}
