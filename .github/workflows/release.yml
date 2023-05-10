@@ -31,8 +31,11 @@ jobs:
       # 打包
       - name: Build Packages
         run: pnpm run build
+      # 创建.npmrc文件
+      - name: Create .npmrc file
+        run: echo "//registry.npmjs.org/:_authToken=${{secrets.NPM_AUTH_TOKEN}}" > ~/.npmrc
       # 发布
       - name: Publish to NPM
         env:
-          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
-        run: npm publish
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+        run: npm publish --access public
