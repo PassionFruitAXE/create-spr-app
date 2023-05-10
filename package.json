@@ -1,6 +1,6 @@
 {
   "name": "spr-begin-cli",
-  "version": "1.0.0-alpha",
+  "version": "1.0.0",
   "author": "PassionFruit",
   "license": "MIT",
   "description": "a interactive javascript cli",
@@ -30,9 +30,12 @@
   "scripts": {
     "dev": "ts-node src/index.ts start",
     "build": "npx rimraf dist && npx tsc",
-    "serve": "create-spr-app start"
+    "serve": "create-spr-app start",
+    "changeset": "changeset",
+    "version": "changeset version && pnpm install"
   },
   "dependencies": {
+    "@changesets/cli": "^2.26.1",
     "commander": "^10.0.1",
     "execa": "^7.1.1",
     "inquirer": "^9.2.2"
