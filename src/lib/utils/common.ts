@@ -1,4 +1,4 @@
-export function mergeObject(obj1: Object, obj2: Object): Object {
+export function mergeObject<T = Object>(obj1: T, obj2: T): Object {
   if (Array.isArray(obj1) && Array.isArray(obj2)) {
     throw new Error("TypeError: obj1 ans obj2存在数组类型");
   } else if (obj1 instanceof Object && obj2 instanceof Object) {

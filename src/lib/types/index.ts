@@ -5,16 +5,18 @@ export interface Module {
   init: (config: TConfig) => Promise<void>;
 }
 
+export type TDependence = {
+  dependencies?: Record<string, string>;
+  devDependencies?: Record<string, string>;
+  beforeInstallCallback?: (project: Project) => void;
+  afterInstallCallback?: (project: Project) => void;
+};
+
 export type TConfig = {
   rootPath: string;
   projectName: string;
   packageManager: PackageManager;
   template: Template;
   builder: Builder;
-  deps: {
-    dependencies?: Record<string, string>;
-    devDependencies?: Record<string, string>;
-    beforeInstallCallback?: (project: Project) => void;
-    afterInstallCallback?: (project: Project) => void;
-  }[];
+  deps: TDependence[];
 };

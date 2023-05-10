@@ -3,11 +3,11 @@ import path from "path";
 import { Builder } from "../enum.js";
 import { CommanderError } from "commander";
 import { fileURLToPath } from "url";
-import { GetArrayValueType } from "../types/utils.js";
+import { globalDependencies, REACT_PREFIX } from "./global.js";
+import { mergeObject } from "../utils/common.js";
 import { Package } from "./packages/package.js";
 import { Project } from "./index.js";
-import { REACT_PREFIX } from "./global.js";
-import { TConfig } from "../types/index.js";
+import { TConfig, TDependence } from "../types/index.js";
 
 // @ts-ignore
 // 防止IDE对import.meta.url报错
@@ -15,22 +15,29 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 abstract class ViteBuilder extends Package {
-  constructor(newValue?: GetArrayValueType<TConfig["deps"]>) {
+  constructor() {
     const name: string = "vite";
-    const value: GetArrayValueType<TConfig["deps"]> = {
+    const {
+      vite,
+      vitePluginEslint,
+      vitePluginMkcert,
+      vitePluginStylelint,
+      viteTsconfigPaths,
+      vitejsPluginLegacy,
+      rollup,
+      terser,
+    } = globalDependencies;
+    const value: TDependence = {
       devDependencies: {
-        vite: "^4.3.5",
-        "vite-plugin-eslint": "^1.8.1",
-        "vite-plugin-mkcert": "1.15.0",
-        "vite-plugin-stylelint": "^4.3.0",
-        "vite-tsconfig-paths": "4.2.0",
-        "@vitejs/plugin-legacy": "^4.0.3",
-        rollup: "^3.21.6",
-        terser: "^5.17.3",
-        ...newValue?.devDependencies,
+        ...vite,
+        ...vitePluginEslint,
+        ...vitePluginMkcert,
+        ...vitePluginStylelint,
+        ...viteTsconfigPaths,
+        ...vitejsPluginLegacy,
+        ...rollup,
+        ...terser,
       },
-      beforeInstallCallback: newValue?.beforeInstallCallback,
-      afterInstallCallback: newValue?.afterInstallCallback,
     };
     super(name, value);
   }
@@ -42,7 +49,8 @@ class ViteBuilderForReact extends ViteBuilder {
   }
 
   constructor() {
-    const value: GetArrayValueType<TConfig["deps"]> = {
+    super();
+    const newValue: TDependence = {
       devDependencies: {
         "@vitejs/plugin-react": "^4.0.0",
       },
@@ -67,7 +75,7 @@ class ViteBuilderForReact extends ViteBuilder {
         );
       },
     };
-    super(value);
+    this.value = mergeObject<TDependence>(this.value, newValue);
   }
 }
 

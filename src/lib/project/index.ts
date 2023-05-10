@@ -3,13 +3,11 @@ import fs from "fs";
 import GitModule from "./gitModule.js";
 import HtmlModule from "./htmlModule.js";
 import ReadmeModule from "./readmeModule.js";
-import { CommanderError } from "commander";
 import { createBuilder } from "./builder.js";
 import { createFileModule, FileModule } from "./srcModule.js";
 import { createTSModule, TSModule } from "./tsModule.js";
 import { Package } from "./packages/package.js";
 import { TConfig } from "../types/index.js";
-import { Template } from "../enum.js";
 import { useCommand } from "../utils/command.js";
 import {
   createPackageJsonModule,
@@ -102,16 +100,3 @@ export class Project {
     });
   }
 }
-
-// /**
-//  * 项目工厂
-//  * @param props TProps
-//  * @returns Project的子类
-//  */
-// export function createProject(props: TConfig) {
-//   if (props.template === Template.REACT) {
-//     return new reactProject(props);
-//   } else {
-//     throw new CommanderError(500, "500", "没有对应的template");
-//   }
-// }
