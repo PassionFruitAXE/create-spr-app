@@ -19,14 +19,14 @@ abstract class ViteBuilder extends Package {
     const name: string = "vite";
     const value: GetArrayValueType<TConfig["deps"]> = {
       devDependencies: {
-        vite: "*",
-        "vite-plugin-eslint": "*",
-        "vite-plugin-mkcert": "*",
-        "vite-plugin-stylelint": "*",
-        "vite-tsconfig-paths": "*",
-        "@vitejs/plugin-legacy": "*",
-        rollup: "*",
-        terser: "*",
+        vite: "^4.3.5",
+        "vite-plugin-eslint": "^1.8.1",
+        "vite-plugin-mkcert": "1.15.0",
+        "vite-plugin-stylelint": "^4.3.0",
+        "vite-tsconfig-paths": "4.2.0",
+        "@vitejs/plugin-legacy": "^4.0.3",
+        rollup: "^3.21.6",
+        terser: "^5.17.3",
         ...newValue?.devDependencies,
       },
       beforeInstallCallback: newValue?.beforeInstallCallback,
@@ -44,7 +44,7 @@ class ViteBuilderForReact extends ViteBuilder {
   constructor() {
     const value: GetArrayValueType<TConfig["deps"]> = {
       devDependencies: {
-        "@vitejs/plugin-react": "*",
+        "@vitejs/plugin-react": "^4.0.0",
       },
       beforeInstallCallback: (project: Project) => {
         project.packageJsonModule?.mergeConfig({

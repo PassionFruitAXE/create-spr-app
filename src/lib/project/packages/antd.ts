@@ -10,7 +10,7 @@ export class AntdPackage extends Package {
   constructor() {
     const name: string = "antd";
     const value: GetArrayValueType<TConfig["deps"]> = {
-      dependencies: { antd: "*" },
+      dependencies: { antd: "5.4.7" },
     };
     super(name, value);
   }

@@ -3,8 +3,8 @@ import inquirer from "inquirer";
 import path from "path";
 import { Builder, PackageManager, Template } from "./lib/enum.js";
 import { createPackagesByTemplate } from "./lib/project/packages/index.js";
-import { createProject } from "./lib/project/index.js";
 import { program } from "commander";
+import { Project } from "./lib/project/index.js";
 
 async function action() {
   /** write code here */
@@ -52,7 +52,7 @@ async function action() {
   const rootPath = path.join(process.cwd(), `/${projectName}`);
 
   /** 创建项目实例 */
-  const project = createProject({
+  const project = new Project({
     rootPath,
     projectName,
     packageManager,

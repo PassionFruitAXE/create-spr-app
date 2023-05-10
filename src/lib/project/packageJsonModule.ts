@@ -44,15 +44,15 @@ class reactPackageJsonModule extends PackageJsonModule {
     super(config);
     this.mergeConfig({
       dependencies: {
-        react: "*",
-        "react-dom": "*",
-        "react-router-dom": "*",
+        react: "18.2.0",
+        "react-dom": "18.2.0",
+        "react-router-dom": "^6.11.1",
       },
       devDependencies: {
-        "@types/node": "*",
-        "@types/react": "*",
-        "@types/react-dom": "*",
-        "eslint-plugin-react": "*",
+        "@types/node": "^20.1.1",
+        "@types/react": "^18.2.6",
+        "@types/react-dom": "^18.2.4",
+        "eslint-plugin-react": "7.32.2",
       },
     });
   }

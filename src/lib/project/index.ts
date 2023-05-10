@@ -16,7 +16,7 @@ import {
   PackageJsonModule,
 } from "./packageJsonModule.js";
 
-export abstract class Project {
+export class Project {
   /** git模块 */
   public gitModule: GitModule | null = null;
   /** index.html模块 */
@@ -103,21 +103,15 @@ export abstract class Project {
   }
 }
 
-class reactProject extends Project {
-  constructor(config: TConfig) {
-    super(config);
-  }
-}
-
-/**
- * 项目工厂
- * @param props TProps
- * @returns Project的子类
- */
-export function createProject(props: TConfig) {
-  if (props.template === Template.REACT) {
-    return new reactProject(props);
-  } else {
-    throw new CommanderError(500, "500", "没有对应的template");
-  }
-}
+// /**
+//  * 项目工厂
+//  * @param props TProps
+//  * @returns Project的子类
+//  */
+// export function createProject(props: TConfig) {
+//   if (props.template === Template.REACT) {
+//     return new reactProject(props);
+//   } else {
+//     throw new CommanderError(500, "500", "没有对应的template");
+//   }
+// }
