@@ -1,6 +1,6 @@
 {
   "name": "create-spr-app",
-  "version": "1.0.0alpha",
+  "version": null,
   "author": "PassionFruit",
   "license": "MIT",
   "description": "a interactive javascript cli by node",
