@@ -1,6 +1,6 @@
 {
   "name": "create-spr-app",
-  "version": "1.0.0alpha",
+  "version": "1.0.0beta",
   "author": "PassionFruit",
   "license": "MIT",
   "description": "a interactive javascript cli by node",
@@ -30,12 +30,9 @@
   "scripts": {
     "dev": "ts-node src/index.ts start",
     "build": "npx rimraf dist && npx tsc",
-    "serve": "create-spr-app start",
-    "changeset": "changeset",
-    "version": "changeset version && pnpm install"
+    "serve": "create-spr-app start"
   },
   "dependencies": {
-    "@changesets/cli": "^2.26.1",
     "chalk": "^5.2.0",
     "commander": "^10.0.1",
     "execa": "^7.1.1",
