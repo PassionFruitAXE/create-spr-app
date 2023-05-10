@@ -1,3 +1,4 @@
+import chalk from "chalk";
 import fs from "fs";
 import GitModule from "./gitModule.js";
 import HtmlModule from "./htmlModule.js";
@@ -84,12 +85,12 @@ export abstract class Project {
    * 安装依赖
    */
   private async packageInstall(): Promise<void> {
-    console.log("安装依赖中~~~");
+    console.log(chalk.cyan("安装依赖中~~~"));
     await useCommand(
       `${this.config.packageManager} install`,
       this.config.rootPath
     );
-    console.log("依赖安装完成");
+    console.log(chalk.cyan("依赖安装完成"));
   }
 
   /**

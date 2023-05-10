@@ -1,3 +1,4 @@
+import chalk from "chalk";
 import inquirer from "inquirer";
 import path from "path";
 import { Builder, PackageManager, Template } from "./lib/enum.js";
@@ -7,7 +8,7 @@ import { program } from "commander";
 
 async function action() {
   /** write code here */
-  console.log("cli start");
+  console.log(chalk.cyan("欢迎使用spr-begin-cli~~~"));
 
   /** 获取项目名 包管理器 模板 打包工具 */
   const { projectName, packageManager, template, builder } =
@@ -62,7 +63,7 @@ async function action() {
   /** 生成项目 */
   await project.run();
 
-  console.log("cli end");
+  console.log(chalk.cyan(`项目已生成 输入: cd ${projectName} 进入项目`));
 }
 
 program.version("1.0.0");
