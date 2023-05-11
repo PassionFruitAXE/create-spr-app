@@ -41,31 +41,24 @@ export class Project {
     this.fileModule = createFileModule(config);
     this.tsModule = createTSModule(config);
     this.builder = createBuilder(config);
-    /** 添加构建工具到依赖中 */
-    this.addBuilder(this.builder);
-    /** package.json模块必须在最后生成 */
     this.packageJsonModule = createPackageJsonModule(config);
-  }
-
-  public addBuilder(builder: Package) {
-    this.config.deps.push(builder.value);
+    /** 添加构建工具到依赖中 */
+    this.packageJsonModule.addDependencies(this.builder.value);
   }
 
   public async run(): Promise<void> {
-    this.useBeforeInstallCallbackExecutor();
+    this.useBeforeInitCallbackExecutor();
     await this.init();
     await this.packageInstall();
-    this.useAfterInstallCallbackExecutor();
+    this.useAfterInitCallbackExecutor();
     useCommand("npx husky install", this.config.rootPath);
   }
 
   /**
    * 执行安装依赖前回调
    */
-  private useBeforeInstallCallbackExecutor(): void {
-    this.config.deps.forEach((dep) => {
-      dep.beforeInstallCallback && dep.beforeInstallCallback(this);
-    });
+  private useBeforeInitCallbackExecutor(): void {
+    this.packageJsonModule?.handleBeforeInstallCallbacks(this);
   }
 
   /**
@@ -98,9 +91,7 @@ export class Project {
   /**
    * 执行安装依赖后回调
    */
-  private useAfterInstallCallbackExecutor(): void {
-    this.config.deps.forEach((dep) => {
-      dep.afterInstallCallback && dep.afterInstallCallback(this);
-    });
+  private useAfterInitCallbackExecutor(): void {
+    this.packageJsonModule?.handleBeforeInstallCallbacks(this);
   }
 }

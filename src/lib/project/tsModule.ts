@@ -2,7 +2,7 @@ import fs from "fs";
 import path from "path";
 import { CommanderError } from "commander";
 import { fileURLToPath } from "url";
-import { Module, TConfig } from "../types/index.js";
+import { IModule, TConfig } from "../types/index.js";
 import { Template } from "../enum.js";
 import { TEMPLATE_PREFIX } from "./global.js";
 
@@ -11,7 +11,7 @@ import { TEMPLATE_PREFIX } from "./global.js";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-export class TSModule implements Module {
+export class TSModule implements IModule {
   public tsConfig: Record<string, any> = {};
   constructor(public config: TConfig) {
     let template = fs.readFileSync(
@@ -22,7 +22,7 @@ export class TSModule implements Module {
   public async init() {
     fs.writeFileSync(
       path.join(this.config.rootPath, "/tsconfig.json"),
-      JSON.stringify(this.tsConfig)
+      JSON.stringify(this.tsConfig, null, 2)
     );
   }
 }

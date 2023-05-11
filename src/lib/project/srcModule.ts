@@ -3,7 +3,7 @@ import path from "path";
 import { CommanderError } from "commander";
 import { deepCopyFile } from "../utils/file.js";
 import { fileURLToPath } from "url";
-import { Module, TConfig } from "../types/index.js";
+import { IModule, TConfig } from "../types/index.js";
 import { REACT_PREFIX } from "./global.js";
 import { Template } from "../enum.js";
 
@@ -12,7 +12,7 @@ import { Template } from "../enum.js";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-export class FileModule implements Module {
+export class FileModule implements IModule {
   constructor(public config: TConfig) {}
   public async init() {
     fs.mkdirSync(path.join(this.config.rootPath, "/src"));

@@ -44,17 +44,13 @@ abstract class ViteBuilder extends Package {
 }
 
 class ViteBuilderForReact extends ViteBuilder {
-  static createInstance(): ViteBuilder {
-    return new ViteBuilderForReact();
-  }
-
   constructor() {
     super();
     const newValue: TDependence = {
       devDependencies: {
         "@vitejs/plugin-react": "^4.0.0",
       },
-      beforeInstallCallback: (project: Project) => {
+      beforeInitCallback: (project: Project) => {
         project.packageJsonModule?.mergeConfig({
           scripts: {
             build: "vite build",
@@ -68,7 +64,7 @@ class ViteBuilderForReact extends ViteBuilder {
           },
         });
       },
-      afterInstallCallback: (project: Project) => {
+      afterInitCallback: (project: Project) => {
         fs.copyFileSync(
           path.join(__dirname, REACT_PREFIX, "/vite.config.ts"),
           path.join(project.config.rootPath, "/vite.config.ts")
@@ -81,7 +77,7 @@ class ViteBuilderForReact extends ViteBuilder {
 
 export function createBuilder(config: TConfig): Package {
   if (config.builder === Builder.VITE) {
-    return ViteBuilderForReact.createInstance();
+    return new ViteBuilderForReact();
   } else {
     throw new CommanderError(500, "500", `无${config.builder}对应的依赖模板`);
   }
