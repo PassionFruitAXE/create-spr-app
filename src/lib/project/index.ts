@@ -41,10 +41,14 @@ export class Project {
     this.fileModule = createFileModule(config);
     this.tsModule = createTSModule(config);
     this.builder = createBuilder(config);
-    /** 添加构建工具 */
-    this.config.deps.push(this.builder?.value ?? {});
+    /** 添加构建工具到依赖中 */
+    this.addBuilder(this.builder);
     /** package.json模块必须在最后生成 */
     this.packageJsonModule = createPackageJsonModule(config);
+  }
+
+  public addBuilder(builder: Package) {
+    this.config.deps.push(builder.value);
   }
 
   public async run(): Promise<void> {

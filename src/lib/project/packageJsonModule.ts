@@ -4,7 +4,7 @@ import { CommanderError } from "commander";
 import { fileURLToPath } from "url";
 import { globalDependencies, TEMPLATE_PREFIX } from "./global.js";
 import { mergeObject } from "../utils/common.js";
-import { Module, TConfig } from "../types/index.js";
+import { Module, TConfig, TDependence } from "../types/index.js";
 import { Template } from "../enum.js";
 
 // @ts-ignore 防止IDE对import.meta.url报错
@@ -18,7 +18,11 @@ export class PackageJsonModule implements Module {
       path.join(__dirname, TEMPLATE_PREFIX, "/package.json")
     );
     this.packageJsonConfig = JSON.parse(template.toString());
-    this.config.deps.forEach(({ dependencies = {}, devDependencies = {} }) => {
+    this.addDeps(...this.config.deps);
+  }
+
+  public addDeps(...deps: TDependence[]): void {
+    deps.forEach(({ dependencies = {}, devDependencies = {} }) => {
       this.mergeConfig({ dependencies, devDependencies });
     });
   }

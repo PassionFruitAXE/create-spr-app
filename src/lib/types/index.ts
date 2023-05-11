@@ -2,7 +2,8 @@ import { Builder, PackageManager, Template } from "../enum.js";
 import { Project } from "../project/index.js";
 
 export interface Module {
-  init: (config: TConfig) => Promise<void>;
+  /** 生成模块文件 */
+  init: () => Promise<void>;
 }
 
 export type TDependence = {
