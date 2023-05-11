@@ -1,7 +1,7 @@
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
-import { Module, TConfig } from "../types/index.js";
+import { IModule, TConfig } from "../types/index.js";
 import { TEMPLATE_PREFIX } from "./global.js";
 
 // @ts-ignore
@@ -9,7 +9,7 @@ import { TEMPLATE_PREFIX } from "./global.js";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-export default class HtmlModule implements Module {
+export default class HtmlModule implements IModule {
   constructor(public config: TConfig) {}
   public async init() {
     fs.copyFileSync(
