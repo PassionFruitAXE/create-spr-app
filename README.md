@@ -21,7 +21,7 @@ $ create-spr-app start
 - stylelint
 - commitlint
 - commitizen
-- TailWind CSS
+- tailwind css
 
 ### 要求
 

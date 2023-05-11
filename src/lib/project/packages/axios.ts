@@ -8,7 +8,7 @@ export class AxiosPackage extends Package {
   }
 
   constructor() {
-    const name: string = "antd";
+    const name: string = "axios";
     const value: TDependence = {
       dependencies: { ...globalDependencies.axios },
     };
