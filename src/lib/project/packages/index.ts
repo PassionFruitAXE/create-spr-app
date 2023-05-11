@@ -1,4 +1,5 @@
 import { AntdPackage } from "./antd.js";
+import { AxiosPackage } from "./axios.js";
 import { CommanderError } from "commander";
 import { Package } from "./package.js";
 
@@ -10,7 +11,7 @@ import { Package } from "./package.js";
 export function createPackagesByTemplate(template: string): Package[] {
   const dependence: Record<string, () => Package[]> = {
     react: () => {
-      return [AntdPackage.createInstance()];
+      return [AntdPackage.createInstance(), AxiosPackage.createInstance()];
     },
   };
   if (!dependence[template]) {

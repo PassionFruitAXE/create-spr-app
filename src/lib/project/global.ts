@@ -3,10 +3,12 @@ export const REACT_PREFIX = `${TEMPLATE_PREFIX}/react`;
 
 /** 依赖列表 */
 export const globalDependencies = {
+  axios: { axios: "^1.4.0" },
   antd: { antd: "5.4.7" },
   react: { react: "18.2.0" },
   reactDom: { "react-dom": "18.2.0" },
   reactRouterDom: { "react-router-dom": "^6.11.1" },
+
   eslintPluginReact: { "eslint-plugin-react": "7.32.2" },
   vite: { vite: "^4.3.5" },
   vitePluginEslint: { "vite-plugin-eslint": "^1.8.1" },
