@@ -15,7 +15,7 @@ export default class GitModule implements IModule {
   public async init() {
     await useCommand("git init", this.config.rootPath);
     fs.copyFileSync(
-      path.join(__dirname, TEMPLATE_PREFIX, "/.gitignore"),
+      path.join(__dirname, TEMPLATE_PREFIX, "/gitignore"),
       path.join(this.config.rootPath, "/.gitignore")
     );
   }
