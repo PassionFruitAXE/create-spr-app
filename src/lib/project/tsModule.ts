@@ -1,10 +1,11 @@
 import fs from "fs";
 import path from "path";
+import { Builder, Template } from "../enum.js";
 import { CommanderError } from "commander";
 import { fileURLToPath } from "url";
 import { IModule, TConfig } from "../types/index.js";
-import { Template } from "../enum.js";
-import { TEMPLATE_PREFIX } from "./global.js";
+import { mergeObject } from "../utils/common.js";
+import { TEMPLATE_PREFIX } from "../constant/global.js";
 
 // @ts-ignore
 // 防止IDE对import.meta.url报错
@@ -19,6 +20,15 @@ export class TSModule implements IModule {
     );
     this.tsConfig = JSON.parse(template.toString());
   }
+
+  /**
+   * 合并config
+   * @param config 新配置
+   */
+  public mergeConfig(config: Record<string, any>): void {
+    this.tsConfig = mergeObject(this.tsConfig, config);
+  }
+
   public async init() {
     fs.writeFileSync(
       path.join(this.config.rootPath, "/tsconfig.json"),
@@ -27,19 +37,21 @@ export class TSModule implements IModule {
   }
 }
 
-class reactTsModule extends TSModule {
+class reactWithViteTsModule extends TSModule {
   constructor(config: TConfig) {
     super(config);
-    this.tsConfig?.compilerOptions &&
-      (this.tsConfig.compilerOptions.jsx = "react-jsx");
-    this.tsConfig?.compilerOptions &&
-      (this.tsConfig.compilerOptions.paths = { "@/*": ["./src/*"] });
+    this.mergeConfig({
+      compilerOptions: {
+        jsx: "react-jsx",
+        paths: { "@/*": ["./src/*"] },
+      },
+    });
   }
 }
 
 export function createTSModule(config: TConfig) {
-  if (config.template === Template.REACT) {
-    return new reactTsModule(config);
+  if (config.template === Template.REACT && config.builder === Builder.VITE) {
+    return new reactWithViteTsModule(config);
   } else {
     throw new CommanderError(500, "500", `无${config.template}对应的依赖模板`);
   }

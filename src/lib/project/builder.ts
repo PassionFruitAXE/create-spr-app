@@ -3,7 +3,7 @@ import path from "path";
 import { Builder } from "../enum.js";
 import { CommanderError } from "commander";
 import { fileURLToPath } from "url";
-import { globalDependencies, REACT_PREFIX } from "./global.js";
+import { globalDependencies, REACT_VITE_PREFIX } from "../constant/global.js";
 import { mergeObject } from "../utils/common.js";
 import { Package } from "./packages/package.js";
 import { Project } from "./index.js";
@@ -66,7 +66,7 @@ class ViteBuilderForReact extends ViteBuilder {
       },
       afterInitCallback: (project: Project) => {
         fs.copyFileSync(
-          path.join(__dirname, REACT_PREFIX, "/vite.config.ts"),
+          path.join(__dirname, REACT_VITE_PREFIX, "/vite.config.ts"),
           path.join(project.config.rootPath, "/vite.config.ts")
         );
       },

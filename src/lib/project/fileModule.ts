@@ -4,7 +4,7 @@ import { CommanderError } from "commander";
 import { deepCopyFile } from "../utils/file.js";
 import { fileURLToPath } from "url";
 import { IModule, TConfig } from "../types/index.js";
-import { REACT_PREFIX } from "./global.js";
+import { REACT_VITE_PREFIX } from "../constant/global.js";
 import { Template } from "../enum.js";
 
 // @ts-ignore
@@ -24,8 +24,8 @@ class ReactFileModule extends FileModule {
     super(config);
   }
   public async init() {
-    /** 将REACT_PREFIX中的文件拷贝过去 */
-    deepCopyFile(path.join(__dirname, REACT_PREFIX), this.config.rootPath);
+    /** 将REACT_VITE_PREFIX中的文件拷贝过去 */
+    deepCopyFile(path.join(__dirname, REACT_VITE_PREFIX), this.config.rootPath);
   }
 }
 

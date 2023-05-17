@@ -10,7 +10,6 @@
 - assets/static —— 存放一些静态资源、如 icon、图片
 - components —— 存放通用组件
 - styles/design —— 存放全局样式
-- enums —— 存放全局 ts 字典
 - constant —— 存放全局常量
 - hooks —— 存放封装的自定义 hook
 - layouts —— 存放布局方案

@@ -1,5 +1,5 @@
 export const TEMPLATE_PREFIX = "../../../template";
-export const REACT_PREFIX = `${TEMPLATE_PREFIX}/react`;
+export const REACT_VITE_PREFIX = `${TEMPLATE_PREFIX}/react_vite`;
 
 /** 依赖列表 */
 export const globalDependencies = {

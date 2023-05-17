@@ -1,10 +1,9 @@
 import chalk from "chalk";
 import fs from "fs";
 import GitModule from "./gitModule.js";
-import HtmlModule from "./htmlModule.js";
 import ReadmeModule from "./readmeModule.js";
 import { createBuilder } from "./builder.js";
-import { createFileModule, FileModule } from "./srcModule.js";
+import { createFileModule, FileModule } from "./fileModule.js";
 import { createTSModule, TSModule } from "./tsModule.js";
 import { Package } from "./packages/package.js";
 import { TConfig } from "../types/index.js";
@@ -17,8 +16,6 @@ import {
 export class Project {
   /** git模块 */
   public gitModule: GitModule | null = null;
-  /** index.html模块 */
-  public htmlModule: HtmlModule | null = null;
   /** README.md模块 */
   public readmeModule: ReadmeModule | null = null;
   /** 配置文件模块 */
@@ -36,7 +33,6 @@ export class Project {
    */
   constructor(public config: TConfig) {
     this.gitModule = new GitModule(config);
-    this.htmlModule = new HtmlModule(config);
     this.readmeModule = new ReadmeModule(config);
     this.fileModule = createFileModule(config);
     this.tsModule = createTSModule(config);
@@ -70,7 +66,6 @@ export class Project {
     /** 创建子模块 */
     await this.fileModule?.init();
     await this.gitModule?.init();
-    await this.htmlModule?.init();
     await this.readmeModule?.init();
     await this.tsModule?.init();
     await this.packageJsonModule?.init();
