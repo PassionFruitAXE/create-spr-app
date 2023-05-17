@@ -1,4 +1,4 @@
-import { globalDependencies } from "../global.js";
+import { globalDependencies } from "../../constant/global.js";
 import { Package } from "./package.js";
 import { TDependence } from "../../types/index.js";
 

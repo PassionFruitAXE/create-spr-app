@@ -2,7 +2,7 @@ import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 import { IModule, TConfig } from "../types/index.js";
-import { TEMPLATE_PREFIX } from "./global.js";
+import { TEMPLATE_PREFIX } from "../constant/global.js";
 import { useCommand } from "../utils/command.js";
 
 // @ts-ignore

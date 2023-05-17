@@ -1,5 +1,6 @@
 import legacy from "@vitejs/plugin-legacy";
 import mkcert from "vite-plugin-mkcert";
+import path from "path";
 import react from "@vitejs/plugin-react";
 import tsconfigPaths from "vite-tsconfig-paths";
 import viteEslint from "vite-plugin-eslint";
@@ -24,6 +25,11 @@ const defineConfig: UserConfigFn = () => {
         source: "coding",
       }),
     ],
+    resolve: {
+      alias: {
+        "@": path.join(__dirname, "src"),
+      },
+    },
     build: {
       rollupOptions: {
         output: {

@@ -2,7 +2,7 @@ import fs from "fs";
 import path from "path";
 import { CommanderError } from "commander";
 import { fileURLToPath } from "url";
-import { globalDependencies, TEMPLATE_PREFIX } from "./global.js";
+import { globalDependencies, TEMPLATE_PREFIX } from "../constant/global.js";
 import { IModule, TConfig, TDependence } from "../types/index.js";
 import { mergeObject } from "../utils/common.js";
 import { Project } from "./index.js";
@@ -53,9 +53,7 @@ export class PackageJsonModule implements IModule {
    * 合并config
    * @param config 新配置
    */
-  public mergeConfig(
-    config: Record<string, Record<string, string> | string>
-  ): void {
+  public mergeConfig(config: Record<string, any>): void {
     this.packageJsonConfig = mergeObject(this.packageJsonConfig, config);
   }
 
