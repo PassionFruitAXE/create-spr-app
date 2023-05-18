@@ -25,6 +25,7 @@ const defineConfig: UserConfigFn = () => {
         source: "coding",
       }),
     ],
+    publicDir: "src/assets",
     resolve: {
       alias: {
         "@": path.join(__dirname, "src"),
