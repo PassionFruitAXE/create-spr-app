@@ -13,6 +13,7 @@
     "plugin:react/recommended",
     "plugin:react/jsx-runtime",
     "plugin:prettier/recommended",
+    "react-app",
     "prettier"
   ],
   "plugins": ["@typescript-eslint", "react", "prettier"],
