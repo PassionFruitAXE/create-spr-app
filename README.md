@@ -25,6 +25,10 @@ $ create-spr-app start
 
 ### 要求
 
+- 本项目采用 ESM 规范,请确保自己 Node 版本 > 18
+
+- 项目命令行交互采用 Commander.js,确保`.js`文件默认以 Node.js javascript runtime 运行
+
 - `npm` should be installed.
 
 - `git` should be installed (recommended v2.4.11 or higher)
