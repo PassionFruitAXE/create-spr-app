@@ -1,12 +1,12 @@
-import fs from "fs";
-import path from "path";
-import { CommanderError } from "commander";
-import { fileURLToPath } from "url";
-import { globalDependencies, TEMPLATE_PREFIX } from "../constant/global.js";
-import { IModule, TConfig, TDependence } from "../types/index.js";
-import { mergeObject } from "../utils/common.js";
-import { Project } from "./index.js";
-import { Template } from "../enum.js";
+import fs from 'fs';
+import path from 'path';
+import { CommanderError } from 'commander';
+import { fileURLToPath } from 'url';
+import { globalDependencies, TEMPLATE_PREFIX } from '../constant/global.js';
+import { IModule, TConfig, TDependence } from '../types/index.js';
+import { mergeObject } from '../utils/common.js';
+import { Project } from './index.js';
+import { Template } from '../enum.js';
 
 // @ts-ignore 防止IDE对import.meta.url报错
 const __filename = fileURLToPath(import.meta.url);
@@ -16,7 +16,7 @@ export class PackageJsonModule implements IModule {
   public packageJsonConfig: Record<string, any> = {};
   constructor(public config: TConfig) {
     let template = fs.readFileSync(
-      path.join(__dirname, TEMPLATE_PREFIX, "/package.json")
+      path.join(__dirname, TEMPLATE_PREFIX, '/package.json')
     );
     this.packageJsonConfig = JSON.parse(template.toString());
   }
@@ -26,7 +26,7 @@ export class PackageJsonModule implements IModule {
    * @param project 当前project对象
    */
   public handleBeforeInstallCallbacks(project: Project): void {
-    this.config.deps.forEach((dep) => {
+    this.config.deps.forEach(dep => {
       dep.beforeInitCallback && dep.beforeInitCallback(project);
     });
   }
@@ -36,7 +36,7 @@ export class PackageJsonModule implements IModule {
    * @param project 当前project对象
    */
   public handleAfterInstallCallbacks(project: Project): void {
-    this.config.deps.forEach((dep) => {
+    this.config.deps.forEach(dep => {
       dep.beforeInitCallback && dep.beforeInitCallback(project);
     });
   }
@@ -66,7 +66,7 @@ export class PackageJsonModule implements IModule {
   public async init() {
     this.mergeDependenciesConfig();
     fs.writeFileSync(
-      path.join(this.config.rootPath, "/package.json"),
+      path.join(this.config.rootPath, '/package.json'),
       JSON.stringify(this.packageJsonConfig, null, 2)
     );
   }
@@ -95,6 +95,9 @@ class reactPackageJsonModule extends PackageJsonModule {
         ...typesReact,
         ...typesReactDom,
         ...eslintPluginReact,
+        'eslint-config-react-app': '7.0.1',
+        'eslint-plugin-react': '7.32.2',
+        'eslint-plugin-react-hooks': '4.6.0',
       },
     });
   }
@@ -104,6 +107,6 @@ export function createPackageJsonModule(config: TConfig) {
   if (config.template === Template.REACT) {
     return new reactPackageJsonModule(config);
   } else {
-    throw new CommanderError(500, "500", `无${config.template}对应的依赖模板`);
+    throw new CommanderError(500, '500', `无${config.template}对应的依赖模板`);
   }
 }
