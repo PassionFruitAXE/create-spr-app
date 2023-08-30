@@ -33,10 +33,14 @@ $ create-spr-app start
 
 - `git` should be installed (recommended v2.4.11 or higher)
 
-完成进度：
+## 完成进度
 
 - [x] 设计整体结构
 - [x] 搭建项目骨架
 - [x] 完成基础交互流程
 - [x] 完成功能模块
 - [ ] 功能测试
+- [ ] 完成配置文件识别方案
+- [ ] 重构 package 实现
+
+![流程图](/images/流程图.png)
